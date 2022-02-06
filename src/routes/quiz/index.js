@@ -2,11 +2,12 @@ import * as cheerio from 'cheerio';
 
 export async function get({ request }) {
 	// `params.id` comes from [id].js
-
-  const [, searchParamsString] = request.url.split('?');
-  const searchParams = new URLSearchParams(searchParamsString);
-  console.log(searchParams);
-  const response = await fetch('https://www.imdb.com/chart/top/?ref_=nv_mv_250');
+  //const [, searchParamsString] = request.url.split('?');
+  const response = await fetch('https://www.imdb.com/chart/top/?ref_=nv_mv_250', {
+    headers: {
+      Cookie: import.meta.env.VITE_COOKIE
+    }
+  });
   const page = await response.text();
   const $ = cheerio.load(page);
 
