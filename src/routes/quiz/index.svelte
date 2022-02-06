@@ -9,6 +9,10 @@
     .btn {
       margin-top: 2rem;
     }
+
+    @media (max-width: 600px) {
+      padding-top: 30%;
+    }
   };
 
   .spinner-container {
@@ -32,6 +36,10 @@
 
     .dot {
       margin-right: .5rem;
+    }
+
+    @media (max-width: 600px) {
+      margin-top: 2rem;
     }
   };
 </style>

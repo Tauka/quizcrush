@@ -31,6 +31,10 @@
   .filters :global {
     display: flex;
 
+
+    @media (max-width: 600px) {
+      flex-direction: column;
+    }
   };
 
   .source-filters {
@@ -38,6 +42,10 @@
 
   .year-filters {
     margin-right: 2rem;
+
+    @media (max-width: 600px) {
+      margin-bottom: 2rem;
+    }
   }
 
   :global(.disabled) {

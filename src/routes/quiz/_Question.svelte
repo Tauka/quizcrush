@@ -4,6 +4,11 @@
 
   .question {
     width: 40rem;
+
+    @media (max-width: 600px) {
+      width: 100%;
+      padding: 0 1rem;
+    }
   }
 
   .question :global {
@@ -39,6 +44,11 @@
     grid-template-rows: 45% 45%;
     column-gap: 4%;
     row-gap: 10%;
+
+    @media (max-width: 600px) {
+      grid-template-rows: 35% 35%;
+      row-gap: 30%;
+    }
   }
 </style>
 <script>
