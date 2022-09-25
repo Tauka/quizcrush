@@ -8,7 +8,7 @@
     padding: 0 10px;
 
     .btn {
-      margin-top: 2rem;
+      margin-top: 1rem;
     }
   };
 
@@ -26,17 +26,12 @@
   }
 
   .answer-dots :global {
-    margin-top: 1rem;
     display: flex;
-    margin-bottom: 1rem;
     width: 100%;
+    margin-bottom: .5rem;
 
     .dot {
       margin-right: .5rem;
-    }
-
-    @media (max-width: 600px) {
-      margin-top: 2rem;
     }
   };
 
@@ -60,7 +55,7 @@
     width: 200px;
     display: flex;
     justify-content: space-around;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
   }
 </style>
 <script>
