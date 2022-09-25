@@ -5,13 +5,10 @@
     align-items: center;
     padding-top: 5%;
     height: 100vh;
+    padding: 0 10px;
 
     .btn {
       margin-top: 2rem;
-    }
-
-    @media (max-width: 600px) {
-      padding-top: 30%;
     }
   };
 

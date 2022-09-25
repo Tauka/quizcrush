@@ -53,13 +53,17 @@
   }
 
   .images {
-    display: 'flex';
-    flex-direction: 'row';
     margin-bottom: 2rem;
+    display: grid;
+    grid-template-columns: 48% 48%;
+    grid-template-rows: 45% 45%;
+    column-gap: 4%;
+    row-gap: 10%;
   }
 
   .star-image {
-    margin-right: 2rem;
+    width: 70%;
+    margin: 0 auto;
   }
 
   .submit {
