@@ -27,6 +27,7 @@
 
   .answer-dots :global {
     display: flex;
+    flex-wrap: wrap;
     width: 100%;
     margin-bottom: .5rem;
 
