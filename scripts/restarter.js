@@ -28,6 +28,9 @@ const spawnDownloader = () => {
       clearTimeout(timeoutId)
       initTimer();
     }
+
+    if(data.toString() === 'done');
+      clearTimeout()
   });
   proc.stderr.on('data', function(data) {
     process.stderr.write(data);

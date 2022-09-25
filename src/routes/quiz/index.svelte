@@ -8,7 +8,7 @@
     padding: 0 10px;
 
     .btn {
-      margin-top: 1rem;
+      margin-top: .5rem;
     }
   };
 
@@ -37,7 +37,7 @@
 
   .answer-card {
     width: 100%;
-    padding: 16px 24px;
+    padding: 12px 24px;
     border-radius: 15px;
     border-width: 2px;
     border-style: solid;
@@ -55,7 +55,7 @@
     width: 200px;
     display: flex;
     justify-content: space-around;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
   }
 </style>
 <script>
@@ -64,6 +64,8 @@
   import { fly } from 'svelte/transition';
   import { shuffle } from './_utils.js';
   import { page } from '$app/stores';
+  import { goto } from '$app/navigation';
+  import HeartIcon from './HeartIcon.svelte';
 
   import Spinner from './_spinner.svelte';
   import Question from './_Question.svelte';
@@ -75,6 +77,7 @@
   let answerText = ''
   let submitted = false;
   let isCorrect = false;
+  let lives = 10;
 
   const levenshteinDistance = (s, t) => {
     if (!s.length) return t.length;
@@ -120,7 +123,6 @@
   async function generateQuestion() {
     loading = true;
     questionNumber = questionNumber + 1;
-    console.log("question number", questionNumber);
     const startYear = $page.url.searchParams.get('startYear');
     const endYear = $page.url.searchParams.get('endYear');
 
@@ -128,13 +130,30 @@
 
     const movie = await res.json();
     currentMovie = movie;
-    console.log("currentMovie", currentMovie);
     loading = false;
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     isCorrect = compareAnswer(currentMovie.name, answerText);
     answers = [...answers, isCorrect]
+
+    if(!isCorrect)
+      lives--;
+
+    if(lives === 9) {
+      const response = await fetch('/api/score', {
+        method: 'POST',
+        body: JSON.stringify({
+          name: $page.url.searchParams.get('name'),
+          score: answers.filter(Boolean).length
+        })
+      })
+
+      const score  = await response.json();
+      console.log("score", score);
+      goto(`/leaderboard?insertIndex=${score.insertIndex}`)
+    }
+
     submitted = true;
   };
 
@@ -144,15 +163,21 @@
     generateQuestion();
   };
 
-  onMount(() => {
-    generateQuestion();
-    console.log("remount");
-  })
+  const range = n => {
+    const list = [];
+    for (let i = 0; i < n; i++) {
+      list.push(i);
+    }
+
+    return list;
+  }
+
+  onMount(generateQuestion)
 
 </script>
 <div class="container">
   {#if loading || currentMovie === null}
-    <div in:fly="{{ y: 50, duration: 300, delay: 300 }}" out:fly="{{ y:50, duration: 300 }}">
+    <div style="margin-top: 2rem"in:fly="{{ y: 50, duration: 300, delay: 300 }}" out:fly="{{ y:50, duration: 300 }}">
       <div class="spinner-container">
         <Spinner/>
         <Subhead> Generating question </Subhead>
@@ -160,6 +185,13 @@
     </div>
   {:else}
     <div class="question-container" in:fly="{{ y: 50, duration: 300, delay: 300 }}" out:fly="{{ y:50, duration: 300 }}">
+      <div style="display: flex; margin-bottom: 0.5rem">
+        {#each range(lives) as i}
+          <div style="margin-left: 0.2rem">
+            <HeartIcon/>
+          </div>
+        {/each}
+      </div>
       <H2>{questionNumber}</H2>
       <Question movie={currentMovie}/>
       <div class="answer-dots">

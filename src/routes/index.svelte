@@ -12,7 +12,6 @@
     flex-direction: column;
     align-items: center;
     height: 100vh;
-    padding-top: 5rem;
   }
 
   .filters-form :global {
@@ -66,12 +65,19 @@
     }
   };
 
+  .header {
+    margin-bottom: 4rem;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+  }
+
   .dash {
     margin: 0 .5rem;
   }
 </style>
 <script>
-  import { Button, Headline, FormField, TextField, Label, RadioGroup, Subhead } from 'attractions';
+  import { Button, Headline, FormField, TextField, Label, RadioGroup, Subhead, H2 } from 'attractions';
   import { fly } from 'svelte/transition';
 
   const items = [
@@ -79,25 +85,25 @@
     { value: 'mostPopular', label: 'Most popular', disabled: true },
   ];
 
-  let startYear = 1980;
+  let startYear = 1995;
   let endYear = 2022;
+  let name = ''
 </script>
 <div class="container" out:fly="{{ y: 50, duration: 300 }}">
+  <div class="header">
+    <Button href="/leaderboard">Leaderboard</Button>
+  </div>
   <Headline> Guess movies by cast </Headline>
   <Subhead> Test your movie knowledge! </Subhead>
   <div class="filters-form">
     <div class="filters">
-      <div class="year-filters">
+      <div style="margin-bottom: 2rem">
         <Label>
-          Years
+          Name
         </Label>
-        <div class="year-filter-inputs">
-          <TextField outline type="number" noSpinner bind:value={startYear}/>
-          <span class="dash"> — </span>
-          <TextField outline type="number" noSpinner bind:value={endYear}/>
-        </div>
+        <TextField bind:value={name}/>
       </div>
     </div>
-    <Button href={`/quiz?startYear=${startYear}&endYear=${endYear}`} filled>Start quiz</Button>
+    <Button href={`/quiz?startYear=${startYear}&endYear=${endYear}&name=${name}`} filled>Start quiz</Button>
   </div>
 </div>
