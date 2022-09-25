@@ -3,12 +3,6 @@
   }
 
   .question {
-    width: 40rem;
-
-    @media (max-width: 600px) {
-      width: 100%;
-      padding: 0 1rem;
-    }
   }
 
   .question :global {
@@ -50,46 +44,41 @@
       row-gap: 30%;
     }
   }
+
+  .input {
+    width: 100%;
+    border-radius: 10px;
+    font-family: "Ubuntu";
+    font-size: 14px;
+  }
+
+  .images {
+    display: 'flex';
+    flex-direction: 'row';
+    margin-bottom: 2rem;
+  }
+
+  .star-image {
+    margin-right: 2rem;
+  }
+
+  .submit {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
 </style>
 <script>
-  import { Card } from 'attractions';
-  import { onMount, createEventDispatcher } from 'svelte';
-
-  const dispatch = createEventDispatcher();
+  import { TextField, Label, Button } from 'attractions';
+  import { onMount } from 'svelte';
 
   export let movie;
-  export let options;
-  export let premise = ''
-  let chosenAnswerIndex = null;
-  const rightAnswerIndex = options.findIndex(o => o.name === movie.name);
-
-  const handleCardClick = (movieName) => {
-    if(chosenAnswerIndex === null)
-      chosenAnswerIndex = options.findIndex(o => o.name === movieName);
-
-      dispatch('select', { correct: chosenAnswerIndex === rightAnswerIndex });
-  }
 </script>
 <div class="card-container">
   <div class="question">
-    <Card class="question-card">{premise}</Card>
-    <div class="options">
-      {#each options as { name }, i}
-        <div on:click={() => handleCardClick(name)}>
-          {#if chosenAnswerIndex !== null && chosenAnswerIndex === i}
-            <Card outline class="option-card" data-correct="{chosenAnswerIndex === rightAnswerIndex}">
-              {name}
-            </Card>
-          {:else if chosenAnswerIndex !== null && i === rightAnswerIndex}
-            <Card outline class="option-card" data-correct="true">
-              {name}
-            </Card>
-          {:else}
-            <Card outline class="option-card">
-              {name}
-            </Card>
-          {/if}
-        </div>
+    <div class="images">
+      {#each movie.imgs as img}
+        <img class="star-image" src={img}/>
       {/each}
     </div>
   </div>

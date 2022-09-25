@@ -41,8 +41,6 @@
   }
 
   .year-filters {
-    margin-right: 2rem;
-
     @media (max-width: 600px) {
       margin-bottom: 2rem;
     }
@@ -81,33 +79,25 @@
     { value: 'mostPopular', label: 'Most popular', disabled: true },
   ];
 
-  let startYear = 1990;
+  let startYear = 1980;
   let endYear = 2022;
-  let source = 'top250';
-
 </script>
 <div class="container" out:fly="{{ y: 50, duration: 300 }}">
-  <Headline> Quiz Crush </Headline>
+  <Headline> Guess movies by cast </Headline>
   <Subhead> Test your movie knowledge! </Subhead>
   <div class="filters-form">
     <div class="filters">
       <div class="year-filters">
-        <Label class={source === 'top250' ? 'disabled' : undefined}>
+        <Label>
           Years
         </Label>
         <div class="year-filter-inputs">
-          <TextField outline disabled={source === 'top250'} type="number" noSpinner bind:value={startYear}/>
+          <TextField outline type="number" noSpinner bind:value={startYear}/>
           <span class="dash"> — </span>
-          <TextField outline disabled={source === 'top250'} type="number" noSpinner bind:value={endYear}/>
+          <TextField outline type="number" noSpinner bind:value={endYear}/>
         </div>
       </div>
-      <div class="source-filters">
-        <Label>
-          Source
-        </Label>
-        <RadioGroup {items} bind:value={source} name="numbers" class="source-radio" />
-      </div>
     </div>
-    <Button href={`/quiz?source=${source}${source !== 'top250' ? `&startYear=${startYear}&endYear=${endYear}` : ''}`} filled>Start quiz</Button>
+    <Button href={`/quiz?startYear=${startYear}&endYear=${endYear}`} filled>Start quiz</Button>
   </div>
 </div>
