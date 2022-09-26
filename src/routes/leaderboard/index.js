@@ -6,11 +6,11 @@ import { streamToString } from '../utils';
   //dotenv.default.config();
 //}
 
-export async function get({ env }) {
+export async function get({ platform }) {
   const s3 = new S3({
     credentials: {
-      accessKeyId: env.AWS_ACCESS_KEY,
-      secretAccessKey: env.AWS_ACCESS_SECRET
+      accessKeyId: platform.env.AWS_ACCESS_KEY,
+      secretAccessKey: platform.env.AWS_ACCESS_SECRET
     },
     region: 'us-east-1'
   });
