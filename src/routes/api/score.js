@@ -2,7 +2,8 @@ import dotenv from 'dotenv';
 import { S3 } from '@aws-sdk/client-s3';
 import { streamToString } from '../utils';
 
-dotenv.config();
+if(process.env.NODE_ENV === 'development')
+  dotenv.config();
 
 const s3 = new S3({
   credentials: {
