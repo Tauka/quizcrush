@@ -79,6 +79,7 @@
   let submitted = false;
   let isCorrect = false;
   let lives = 10;
+  let finished = false;
 
   const levenshteinDistance = (s, t) => {
     if (!s.length) return t.length;
@@ -134,29 +135,30 @@
     loading = false;
   }
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = () => {
     isCorrect = compareAnswer(currentMovie.name, answerText);
     answers = [...answers, isCorrect]
 
     if(!isCorrect)
       lives--;
 
-    if(lives === 9) {
-      const response = await fetch('/api/score', {
-        method: 'POST',
-        body: JSON.stringify({
-          name: $page.url.searchParams.get('name'),
-          score: answers.filter(Boolean).length
-        })
-      })
-
-      const score  = await response.json();
-      console.log("score", score);
-      goto(`/leaderboard?insertIndex=${score.insertIndex}`)
-    }
-
     submitted = true;
   };
+
+  const handleFinish = async () => {
+    finished = true;
+    const response = await fetch('/api/score', {
+      method: 'POST',
+      body: JSON.stringify({
+        name: $page.url.searchParams.get('name'),
+        score: answers.filter(Boolean).length
+      })
+    })
+
+    const score = answers.filter(Boolean).length;
+    const leaderboard  = await response.json();
+    goto(`/leaderboard?insertIndex=${leaderboard.insertIndex}&score=${score}`)
+  }
 
   const handleNext = () => {
     submitted = false;
@@ -182,6 +184,13 @@
       <div class="spinner-container">
         <Spinner/>
         <Subhead> Generating question </Subhead>
+      </div>
+    </div>
+  {:else if finished}
+    <div style="margin-top: 2rem"in:fly="{{ y: 50, duration: 300, delay: 300 }}" out:fly="{{ y:50, duration: 300 }}">
+      <div class="spinner-container">
+        <Spinner/>
+        <Subhead> Calculating results </Subhead>
       </div>
     </div>
   {:else}
@@ -210,8 +219,11 @@
       </div>
       <div class="controls">
         <Button filled disabled={submitted} on:click={handleSubmit}> Submit </Button>
-        {#if submitted}
+        {#if submitted && lives > 0}
           <Button filled on:click={handleNext}> Next </Button>
+        {/if}
+        {#if submitted && lives === 0}
+          <Button filled on:click={handleFinish}> Finish </Button>
         {/if}
       </div>
       {#if submitted}
