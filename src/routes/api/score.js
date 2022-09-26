@@ -58,13 +58,14 @@ const addToLeaderboard = (leaderboard, newScore) => {
       insertIndex = i;
       newLeaderboard.push(newScore);
       console.log(`added at index ${i}`, newLeaderboard);
-      newLeaderboard.push(leaderboard[i]);
       break;
     }
 
     i++;
   }
 
+  if(insertIndex !== null)
+    newLeaderboard.push(...leaderboard.slice(insertIndex))
   if(newLeaderboard.length < 10 && insertIndex === null) {
     newLeaderboard.push(newScore);
     insertIndex = newLeaderboard.length - 1;
