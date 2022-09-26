@@ -70,6 +70,7 @@
   <H1>Top 10 scores</H1>
   <Table
     {headers}
+    alternatingRows={false}
     items={leaderboard}
   />
 </div>
